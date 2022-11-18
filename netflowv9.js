@@ -32,6 +32,10 @@ function nfPktDecode(msg,rinfo) {
         case 9:
             return this.nf9PktDecode(msg,rinfo);
             break;
+        case 10:
+            // attempt decode of ipfix with the v9 parser
+            return this.nf9PktDecode(msg,rinfo);
+            break;
         default:
             debug('bad header version %d', version);
             return;

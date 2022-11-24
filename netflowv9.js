@@ -11,11 +11,13 @@ var e = require('events').EventEmitter;
 var Dequeue = require('dequeue');
 
 var nft = require('./js/nf9/nftypes');
+var enterprise = require('./js/nf10/nfEnterpriseTypes');
 var nf1PktDecode = require('./js/nf1/nf1decode');
 var nf5PktDecode = require('./js/nf5/nf5decode');
 var nf7PktDecode = require('./js/nf7/nf7decode');
 var nf9PktDecode = require('./js/nf9/nf9decode');
 var nfInfoTemplates = require('./js/nf9/nfinfotempl');
+var nf10PktDecode = require('./js/nf10/nf10decode');
 
 function nfPktDecode(msg,rinfo) {
     var version = msg.readUInt16BE(0);
@@ -33,8 +35,7 @@ function nfPktDecode(msg,rinfo) {
             return this.nf9PktDecode(msg,rinfo);
             break;
         case 10:
-            // attempt decode of ipfix with the v9 parser
-            return this.nf9PktDecode(msg,rinfo);
+            return this.nf10PktDecode(msg,rinfo);
             break;
         default:
             debug('bad header version %d', version);
@@ -48,6 +49,7 @@ function NetFlowV9(options) {
     this.templates = {};
     this.nfTypes = clone(nft.nfTypes);
     this.nfScope = clone(nft.nfScope);
+    this.enterpriseTypes = clone(enterprise.enterpriseTypes);
     this.cb = null;
     this.templateCb = null;
     this.socketType = 'udp4';
@@ -60,7 +62,8 @@ function NetFlowV9(options) {
     if (typeof options == 'object') {
         if (options.ipv4num) decIpv4Rule[4] = "o['$name']=buf.readUInt32BE($pos);";
         if (options.nfTypes) this.nfTypes = util._extend(this.nfTypes,options.nfTypes); // Inherit nfTypes
-        if (options.nfScope) this.nfScope = util._extend(this.nfScope,options.nfScope); // Inherit nfTypes
+        if (options.nfScope) this.nfScope = util._extend(this.nfScope,options.nfScope); // Inherit nfScope
+        if (options.enterpriseTypes) this.enterpriseTypes = util._extend(this.enterpriseTypes,options.enterpriseTypes); // Inherit enterpriseTypes
         if (options.socketType) this.socketType = options.socketType;
         if (options.port) this.port = options.port;
         if (options.templates) this.templates = options.templates;
@@ -176,4 +179,5 @@ NetFlowV9.prototype.nf1PktDecode = nf1PktDecode;
 NetFlowV9.prototype.nf5PktDecode = nf5PktDecode;
 NetFlowV9.prototype.nf7PktDecode = nf7PktDecode;
 NetFlowV9.prototype.nf9PktDecode = nf9PktDecode;
+NetFlowV9.prototype.nf10PktDecode = nf10PktDecode;
 module.exports = NetFlowV9;

@@ -1,5 +1,5 @@
 {
-  "name": "node-netflowv9",
+  "name": "@gavinaiken/netflowv9",
   "version": "1.0.0",
   "description": "NetFlow Version 1,5,7,9 compatible library (with support for NetFlow v9 options template & data) for Node.JS. It also has experimental support for IPFIX (NetFlow v10).",
   "main": "netflowv9.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/delian/node-netflowv9.git"
+    "url": "git+https://github.com/delian/node-netflowv9.git"
   },
   "keywords": [
     "netflow",
@@ -32,5 +32,8 @@
   "devDependencies": {
     "chai": "^4.3.7",
     "mocha": "^10.1.0"
+  },
+  "directories": {
+    "test": "test"
   }
 }

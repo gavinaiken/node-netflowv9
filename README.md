@@ -1,6 +1,8 @@
 node-netflowv9
 ==============
 
+This is a fork of https://github.com/delian/node-netflowv9 with experimental support for IPFIX (version 10). This is not fully implemented or tested yet so beware if you are trying to use it in production! When support is more complete I aim to offer a pull request to the original module to integrate the changes.
+
 NetFlow Version 1,5,7,9 library for Node.JS
 NetFlow Version 10 (IPFix) is next (a lot of the IPFIX types are implemented already)!
 

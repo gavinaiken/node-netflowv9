@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/delian/node-netflowv9.git"
+    "url": "git+https://github.com/gavinaiken/node-netflowv9.git"
   },
   "keywords": [
     "netflow",
@@ -28,7 +28,7 @@
     "debug": "^4.3.4",
     "dequeue": "^1.0.5"
   },
-  "homepage": "https://github.com/delian/node-netflowv9",
+  "homepage": "https://github.com/gavinaiken/node-netflowv9",
   "devDependencies": {
     "chai": "^4.3.7",
     "mocha": "^10.1.0"

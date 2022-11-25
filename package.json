@@ -4,6 +4,7 @@
   "description": "NetFlow Version 1,5,7,9 compatible library (with support for NetFlow v9 options template & data) for Node.JS. It also has experimental support for IPFIX (NetFlow v10).",
   "main": "netflowv9.js",
   "scripts": {
+    "lint": "eslint .",
     "test": "mocha ./test"
   },
   "repository": {
@@ -31,9 +32,13 @@
   "homepage": "https://github.com/gavinaiken/node-netflowv9",
   "devDependencies": {
     "chai": "^4.3.7",
+    "eslint": "^8.28.0",
     "mocha": "^10.1.0"
   },
   "directories": {
     "test": "test"
+  },
+  "engines": {
+    "node": ">=8.0.0"
   }
 }

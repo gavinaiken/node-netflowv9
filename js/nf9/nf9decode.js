@@ -1,8 +1,6 @@
 var debug = require('debug')('NetFlowV9');
 
-var decMacRule = {
-    0: "o['$name']=buf.toString('hex',$pos,$pos+$len);"
-};
+const { decMacRule } = require('./fieldRules');
 
 function nf9PktDecode(msg,rinfo) {
     var templates = this.nfInfoTemplates(rinfo);

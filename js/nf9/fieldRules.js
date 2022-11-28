@@ -22,15 +22,18 @@ var decIpv6Rule = {
 };
 
 var decMacRule = {
-    0: "o['$name']=buf.toString('hex',$pos,$pos+$len);"
+    0: "o['$name']=buf.toString('hex',$pos,$pos+$len);",
+    65535: "l=buf.readUInt8($pos);if(l=255){l=buf.readUInt16BE($pos+1);offset+=2;}o['$name']=buf.toString('hex',$pos+1,$pos+1+l);offset+=l;"
 };
 
 var decStringRule = {
-    0: 'o[\'$name\']=buf.toString(\'utf8\',$pos,$pos+$len).replace(/\\0/g,\'\');'
+    0: 'o[\'$name\']=buf.toString(\'utf8\',$pos,$pos+$len).replace(/\\0/g,\'\');',
+    65535: `l=buf.readUInt8($pos);if(l=255){l=buf.readUInt16BE($pos+1);offset+=2;}o['$name']=buf.toString('utf8',$pos+1,$pos+1+l).replace(/\\0/g,'');offset+=l;`
 };
 
 var decAsciiStringRule = {
-    0: 'o[\'$name\']=buf.toString(\'ascii\',$pos,$pos+$len).replace(/\\0/g,\'\');'
+    0: 'o[\'$name\']=buf.toString(\'ascii\',$pos,$pos+$len).replace(/\\0/g,\'\');',
+    65535: `l=buf.readUInt8($pos);if(l=255){l=buf.readUInt16BE($pos+1);offset+=2;}o['$name']=buf.toString('ascii',$pos+1,$pos+1+l).replace(/\\0/g,'');offset+=l;`
 };
 
 module.exports = {

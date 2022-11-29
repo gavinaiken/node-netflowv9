@@ -165,7 +165,7 @@ function nf10PktDecode(msg, rinfo) {
             let scopeCount = buf.readUInt16BE(4);
             let fieldCount = count - scopeCount;
 
-            let cr = "var o={ isOption: true }; var t;\n";
+            let cr = "var o={ isOption: true }; var t; var l; var offset = 0;\n";
             let list = [];
             let len = 0, pos = 0;
 

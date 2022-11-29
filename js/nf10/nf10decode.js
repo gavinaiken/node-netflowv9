@@ -2,7 +2,7 @@ var debug = require('debug')('NetFlowV9');
 
 const { decMacRule } = require('../nf9/fieldRules');
 
-function nf9PktDecode(msg, rinfo) {
+function nf10PktDecode(msg, rinfo) {
     var templates = this.nfInfoTemplates(rinfo);
     var nfTypes = this.nfTypes || {};
     var enterpriseTypes = this.enterpriseTypes || {};
@@ -219,7 +219,7 @@ function nf9PktDecode(msg, rinfo) {
     while (buf.length > 3) { // length > 3 allows us to skip padding
         var fsId = buf.readUInt16BE(0);
         var len = buf.readUInt16BE(2);
-        debug(`fsId len`, fsId, len)
+        // debug(`fsId len`, fsId, len);
         if (fsId === 2) {
             readTemplate(buf);
         } else if (fsId === 3) {
@@ -245,4 +245,4 @@ function nf9PktDecode(msg, rinfo) {
     return out;
 }
 
-module.exports = nf9PktDecode;
+module.exports = nf10PktDecode;

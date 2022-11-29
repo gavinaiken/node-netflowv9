@@ -206,7 +206,7 @@ function nf10PktDecode(msg, rinfo) {
             }
 
             cr += `// option ${tId}\n`;
-            cr += "return o;";
+            cr += "return { o, offset };\n";
             debug('option template compiled to %s', cr);
             templates[tId] = { len: len, compiled: new Function('buf', 'nfTypes', cr) };
             appendTemplate(tId);

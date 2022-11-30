@@ -15,7 +15,13 @@ function nf10PktDecode(msg, rinfo) {
         sourceId: msg.readUInt32BE(12) // spec calls this Observation Domain ID but using sourceId allows for simpler interoperability with v9
     }, flows: [] };
 
-    debug(out.header);
+    if (this.skipDuplicateSequence) {
+        let id = `${rinfo.address}:${rinfo.port}:${out.header.sequence}:${out.header.length}`;
+        if (this.sequencesSeen[id]) {
+            return null;
+        }
+        this.sequencesSeen[id] = Date.now();
+    }
 
     function appendTemplate(tId) {
         var id = rinfo.address + ':' + rinfo.port;

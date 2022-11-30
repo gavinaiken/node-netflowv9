@@ -91,8 +91,24 @@ function NetFlowV9(options) {
                     }
                 }
             }
-            
+
             if (this.proxy.length == 0) this.proxy = null;
+        }
+        if (options.skipDuplicateSequence) {
+            this.skipDuplicateSequence = options.skipDuplicateSequence;
+            this.sequencesSeen = {};
+            // once a minute make new cache of sequences seen
+            let interval = setInterval(() => {
+                let twentySecondsAgo = Date.now() - 20000;
+                let oldSequences = this.sequencesSeen;
+                this.sequencesSeen = {};
+                Object.keys(oldSequences).forEach(key => {
+                    if (oldSequences[key] > twentySecondsAgo) {
+                        this.sequencesSeen[key] = oldSequences[key];
+                    }
+                });
+            }, 60000);
+            interval.unref();
         }
         e.call(this,options);
     }

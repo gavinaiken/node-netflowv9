@@ -16,6 +16,14 @@ function nf9PktDecode(msg,rinfo) {
         sourceId: msg.readUInt32BE(16)
     }, flows: [] };
 
+    if (this.skipDuplicateSequence) {
+        let id = `${rinfo.address}:${rinfo.port}:${out.header.sequence}:${msg.length}`;
+        if (this.sequencesSeen[id]) {
+            return null;
+        }
+        this.sequencesSeen[id] = Date.now();
+    }
+
     function appendTemplate(tId) {
         var id = rinfo.address + ':' + rinfo.port;
         out.templates = out.templates || {};

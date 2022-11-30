@@ -1,6 +1,6 @@
 {
   "name": "@gavinaiken/netflowv9",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "NetFlow Version 1,5,7,9 compatible library (with support for NetFlow v9 options template & data) for Node.JS. It also has experimental support for IPFIX (NetFlow v10).",
   "main": "netflowv9.js",
   "scripts": {

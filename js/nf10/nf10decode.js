@@ -107,11 +107,11 @@ function nf10PktDecode(msg, rinfo) {
             let list = [];
             let len = 0, pos = 0;
             for (let i = 0; i < cnt; i++) {
-                let fieldSpecifier = { enterpriseBit: 0, enterpriseNumber: undefined, type: buf.readUInt16BE(4 + 4 * pos), len: buf.readUInt16BE(6 + 4 * pos) };
+                let fieldSpecifier = { enterpriseNumber: undefined, type: buf.readUInt16BE(4 + 4 * pos), len: buf.readUInt16BE(6 + 4 * pos) };
                 pos++;
                 if (fieldSpecifier.type > 0x8000) {
+                    // enterpriseBit = 1
                     fieldSpecifier.type = fieldSpecifier.type & 0x7fff;
-                    fieldSpecifier.enterpriseBit = 1;
                     fieldSpecifier.enterpriseNumber = buf.readUInt32BE(4 + 4 * pos);
                     pos++;
                 }
@@ -177,11 +177,11 @@ function nf10PktDecode(msg, rinfo) {
 
             // scope fields come first
             for (let i = 0; i < scopeCount; i++) {
-                let fieldSpecifier = { enterpriseBit: 0, enterpriseNumber: undefined, type: buf.readUInt16BE(6 + 4 * pos), len: buf.readUInt16BE(8 + 4 * pos) };
+                let fieldSpecifier = { enterpriseNumber: undefined, type: buf.readUInt16BE(6 + 4 * pos), len: buf.readUInt16BE(8 + 4 * pos) };
                 pos++;
                 if (fieldSpecifier.type > 0x8000) {
+                    // enterpriseBit = 1
                     fieldSpecifier.type = fieldSpecifier.type & 0x7fff;
-                    fieldSpecifier.enterpriseBit = 1;
                     fieldSpecifier.enterpriseNumber = buf.readUInt32BE(6 + 4 * pos);
                     pos++;
                 }
@@ -195,11 +195,11 @@ function nf10PktDecode(msg, rinfo) {
 
             // now read the options fields
             for (let i = 0; i < fieldCount; i++) {
-                let fieldSpecifier = { enterpriseBit: 0, enterpriseNumber: undefined, type: buf.readUInt16BE(6 + 4 * pos), len: buf.readUInt16BE(8 + 4 * pos) };
+                let fieldSpecifier = { enterpriseNumber: undefined, type: buf.readUInt16BE(6 + 4 * pos), len: buf.readUInt16BE(8 + 4 * pos) };
                 pos++;
                 if (fieldSpecifier.type > 0x8000) {
+                    // enterpriseBit = 1
                     fieldSpecifier.type = fieldSpecifier.type & 0x7fff;
-                    fieldSpecifier.enterpriseBit = 1;
                     fieldSpecifier.enterpriseNumber = buf.readUInt32BE(6 + 4 * pos);
                     pos++;
                 }

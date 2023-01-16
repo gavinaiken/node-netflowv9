@@ -92,12 +92,16 @@ function nf9PktDecode(msg,rinfo) {
     }
 
     function decodeTemplate(fsId, buf) {
-        if (typeof templates[fsId].compiled !== 'function') {
-            templates[fsId].compiled = compileTemplate(templates[fsId].list);
+        try {
+            if (typeof templates[fsId].compiled !== 'function') {
+                templates[fsId].compiled = compileTemplate(templates[fsId].list);
+            }
+            var o = templates[fsId].compiled(buf, nfTypes);
+            o.fsId = fsId;
+            return o;
+        } catch (err) {
+            return { error: err };
         }
-        var o = templates[fsId].compiled(buf, nfTypes);
-        o.fsId = fsId;
-        return o;
     }
 
     function compileScope(type,pos,len) {
@@ -175,7 +179,15 @@ function nf9PktDecode(msg,rinfo) {
         else if (fsId > 255 && typeof templates[fsId] != 'undefined') {
             var tbuf = buf.slice(4, len);
             while (tbuf.length >= templates[fsId].len) {
-                out.flows.push(decodeTemplate(fsId, tbuf));
+                let result = decodeTemplate(fsId, tbuf);
+                if (result.error) {
+                    // we threw an error in decode template so stop parsing this set as we
+                    // don't know what the correct offset should be
+                    out.errors = out.errors || [];
+                    out.errors.push(result.error);
+                    break;
+                }
+                out.flows.push(result);
                 tbuf = tbuf.slice(templates[fsId].len);
             }
         } else if (fsId > 255) {

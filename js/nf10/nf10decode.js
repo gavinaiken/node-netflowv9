@@ -130,12 +130,16 @@ function nf10PktDecode(msg, rinfo) {
     }
 
     function decodeTemplate(fsId, buf) {
-        if (typeof templates[fsId].compiled !== 'function') {
-            templates[fsId].compiled = compileTemplate(templates[fsId].list);
+        try {
+            if (typeof templates[fsId].compiled !== 'function') {
+                templates[fsId].compiled = compileTemplate(templates[fsId].list);
+            }
+            var result = templates[fsId].compiled(buf, nfTypes);
+            result.o.fsId = fsId;
+            return result;
+        } catch (err) {
+            return { error: err };
         }
-        var result = templates[fsId].compiled(buf, nfTypes);
-        result.o.fsId = fsId;
-        return result;
     }
 
     function compileScope(enterpriseNumber, type, pos, len) {
@@ -225,7 +229,7 @@ function nf10PktDecode(msg, rinfo) {
     while (buf.length > 3) { // length > 3 allows us to skip padding
         var fsId = buf.readUInt16BE(0);
         var len = buf.readUInt16BE(2);
-        // debug(`fsId len`, fsId, len);
+        // debug('fsId %d, len %d', fsId, len);
         if (fsId === 2) {
             readTemplate(buf);
         } else if (fsId === 3) {
@@ -236,6 +240,13 @@ function nf10PktDecode(msg, rinfo) {
             var tbuf = buf.slice(4, len);
             while (tbuf.length >= templates[fsId].len) {
                 let result = decodeTemplate(fsId, tbuf);
+                if (result.error) {
+                    // we threw an error in decode template so stop parsing this set as we
+                    // don't know what the correct offset should be
+                    out.errors = out.errors || [];
+                    out.errors.push(result.error);
+                    break;
+                }
                 out.flows.push(result.o);
                 tbuf = tbuf.slice(templates[fsId].len + result.offset);
             }

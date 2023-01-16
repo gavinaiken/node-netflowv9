@@ -180,6 +180,13 @@ function NetFlowV9(options) {
             } else {
                 debug('Undecoded flows',o);
             }
+            if (o && o.errors && o.errors.length) {
+                let data = { rinfo, buffer: msg.toJSON() };
+                o.errors.forEach(err => {
+                    err.data = data;
+                    me.emit('error', err);
+                });
+            }
         }
 
         me.set = true;

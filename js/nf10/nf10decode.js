@@ -84,7 +84,7 @@ function nf10PktDecode(msg, rinfo) {
         var i, z, n;
         var f = "var o = Object.create(null); var t; var l; var offset = 0;\n";
         var listLen = list ? list.length : 0;
-        for (i = 0, n = 0; i < listLen; i++, n += z.len) {
+        for (i = 0, n = 0; i < listLen; i++, n += z.len === 65535 ? 1 : z.len) {
             z = list[i];
             getType(z.enterpriseNumber, z.type, true);
             f += compileStatement(z.enterpriseNumber, z.type, n, z.len) + ";\n";

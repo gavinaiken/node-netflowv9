@@ -158,7 +158,7 @@ function NetFlowV9(options) {
                 msg = new Buffer(data.buffer);
                 rinfo = data.rinfo;
             }
-            if (rinfo.size<20) return;
+            if (rinfo.size<20) continue;
             var o = me.nfPktDecode(msg,rinfo);
             var timeMs = (new Date().getTime()) - startTime;
             if (o && o.flows.length > 0) { // If the packet does not contain flows, only templates we do not decode
